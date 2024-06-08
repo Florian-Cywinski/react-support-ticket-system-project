@@ -6,11 +6,10 @@ const app = express()   // To initialize the app variable
 
 // To create a route with express (Web Framework)   // React JS - Express - Mongoose (Node JS Web Server) - MongoDB
 // app.get('/', (request, response) => {   // GET request -> To test that we can use the browser or postman
-app.get('/api/users', (request, response) => {   // GET request -> To test that we can use the browser or postman
-    // response.send('Hellooo')    // To send a string to the Web Server
-    // response.json({ message: 'Welcome to the Support Desk API' })   // To send a JSON file to the Web Server
-    // response.status(201).send('Hellooo')    // To send a string to the Web Server and a status (201 means created)
+app.get('/', (request, response) => {   // GET request -> To test that we can use the browser or postman
     response.status(200).json({ message: 'Welcome to the Support Desk API' })   // To send a JSON file to the Web Server and a status (201 means OK)
 })
+
+app.use('/api/users', require('./routes/userRoutes'))   // Routes to /api/users - require('./routes/userRoutes') to bring it in from userRoutes.js
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`))    // To listen on a specific port

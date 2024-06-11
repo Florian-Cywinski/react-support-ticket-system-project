@@ -1,5 +1,6 @@
-const asyncHandler = require('express-async-handler')
+const asyncHandler = require('express-async-handler')   // express is the web-framework (backend)
 const bcrypt = require('bcryptjs')  // To be able to hash the pw
+const jwt = require('jsonwebtoken')  // To be able to hash the pw
 
 const User = require('../models/userModel')
 
@@ -40,7 +41,8 @@ const registerUser = asyncHandler(async (request, response) => {
         response.status(201).json({ // To send (response) a status code (everything is good and something was created) and a json
             _id: user._id,  // _id coz that's the way mongoDB stores id's - ultimately a token will returned - user is the created user ._id comes from mongoose (I guess)
             name: user.name,
-            email: user.email
+            email: user.email,
+            token: generateToken(user._id)  // To generate and store an individual web token (it's used for the frontend part)
         })
     } else {
         response.status(400)
@@ -54,8 +56,30 @@ const registerUser = asyncHandler(async (request, response) => {
 // @route:          /api/users/login
 // @accsess:        Public
 const loginUser = asyncHandler(async (request, response) => {
-    response.send('Login Route')    // To send a string to the Web Server
+    const {email, password} = request.body  // To have the values which sends the user during login in variables
+
+    const user = await User.findOne({email})  // User is the model - findOne is a method of mongoose - {email: email} - await coz mongoose returns a Promise
+
+    // Check user and password match
+    if (user && (await bcrypt.compare(password, user.password))) {  // if the user exists and the password matches (the typed in pw and the stored pw (db))
+        response.status(200).json({ // To send (response) a status code and a json
+            _id: user._id,  // _id coz that's the way mongoDB stores id's - ultimately a token will returned - user is the created user ._id comes from mongoose (I guess)
+            name: user.name,
+            email: user.email,
+            token: generateToken(user._id)  // To generate and store an individual web token (it's used for the frontend part)
+        })
+    } else {
+        response.status(401)    // 401 -> unauthorized
+        throw new Error('Invalid credentials')
+    }
+
+    // response.send('Login Route')    // To send a string to the Web Server
 })
+
+// Generate token
+const generateToken = (id) => {
+    return jwt.sign({id}, process.env.JWT_SECRET, {expiresIn: '30d'})   // user._id from db - pw - expires in 30 days
+}
 
 module.exports = {  // To export the controller functions (the logic of the routes used in userRoutes.js)
     registerUser,

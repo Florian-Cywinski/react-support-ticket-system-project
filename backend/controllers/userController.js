@@ -76,6 +76,20 @@ const loginUser = asyncHandler(async (request, response) => {
     // response.send('Login Route')    // To send a string to the Web Server
 })
 
+// @description:    Get current user
+// @route:          /api/users/me
+// @accsess:        Private
+const getMe = asyncHandler(async (request, response) => {
+    // response.send('Meeee')
+    response.status(200).json(request.user) // To get the whole user object - GET http://localhost:5000/api/users/me with Authorization -> Bearer Token
+    // To only get back the id, email and name of the logged in user
+    const user = {
+        id: request.user._id,
+        email: request.user.email,
+        name: request.user.name,
+    }
+})
+
 // Generate token
 const generateToken = (id) => {
     return jwt.sign({id}, process.env.JWT_SECRET, {expiresIn: '30d'})   // user._id from db - pw - expires in 30 days
@@ -83,5 +97,6 @@ const generateToken = (id) => {
 
 module.exports = {  // To export the controller functions (the logic of the routes used in userRoutes.js)
     registerUser,
-    loginUser
+    loginUser,
+    getMe
 }

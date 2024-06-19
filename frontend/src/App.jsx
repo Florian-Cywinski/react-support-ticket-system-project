@@ -3,6 +3,8 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Header from './components/Header'
+import { ToastContainer } from 'react-toastify' // To be able to add toasts (messages) whereever needed in the project
+import 'react-toastify/dist/ReactToastify.css'
 
 
 function App() {
@@ -18,6 +20,7 @@ function App() {
           </Routes>
         </div>
       </Router>
+      <ToastContainer />    {/* To be able to add toasts (messages) whereever needed in the project */}
     </>
   )
 }

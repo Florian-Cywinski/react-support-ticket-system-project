@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { FaUser } from 'react-icons/fa'
 import { toast } from 'react-toastify'
+import { useSelector, useDispatch } from 'react-redux'  // useSelector to select from the global state (e.g. user, message) - useDispatch to dispatch actions (e.g. register in authSlice.js)
+import { register } from '../features/auth/authSlice' // To bring in the register function / action
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -11,6 +13,10 @@ function Register() {
   })
 
   const { name, email, password, password2 } = formData   // To destructure the keys from the object
+
+  const dispatch = useDispatch()  // To be able to dispatch a function / action brought in (to be able to update a state, e.g. from the auth slice)
+
+  const { isLoading } = useSelector((state) => state.auth)  // To get the state isLoading from auth
 
   const onChange = (e) => {
     setFormData((prevState) => ({ // prevState is the old state of the formData object
@@ -24,8 +30,18 @@ function Register() {
 
     if (password !== password2) {
       toast.error('Passwords do not match')
-    } 
+    } else {
+      const userData = {
+        name,       // name: name   // Comes from the form
+        email,      // ...
+        password,
+      }
+
+      dispatch(register(userData))  // To update the userData
+
+    }
   }
+
 
   return (
     <>

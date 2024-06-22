@@ -24,11 +24,11 @@ const register = async (userData) => {
 // }
 
 // Logout user
-// const logout = () => localStorage.removeItem('user')
+const logout = () => localStorage.removeItem('user')
 
 const authService = {   // To structure all functions for the export
   register,
-//   logout,
+  logout,
 //   login,
 }
 

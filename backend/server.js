@@ -15,6 +15,7 @@ app.use(express.urlencoded({extended: false}))  // To accept the url encoded for
 
 // Routes
 app.use('/api/users', require('./routes/userRoutes'))   // Routes to /api/users - require('./routes/userRoutes') to bring it in from userRoutes.js
+app.use('/api/tickets', require('./routes/ticketRoutes'))   // Routes to /api/tickets - require('./routes/ticketRoutes') to bring it in from ticketRoutes.js
 
 app.use(errorHandler)   // To be able to use the errorHandler function
 

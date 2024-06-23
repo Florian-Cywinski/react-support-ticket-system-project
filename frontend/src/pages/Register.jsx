@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'  // useSelector to select from the global state (e.g. user, message) - useDispatch to dispatch actions (e.g. register in authSlice.js)
 import { register } from '../features/auth/authSlice' // To bring in the register function / action
 import { useNavigate } from 'react-router-dom'
+import Spinner from '../components/Spinner'
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -53,6 +54,9 @@ function Register() {
     }
   }
 
+  if (isLoading) {
+    return <Spinner />
+  }
 
   return (
     <>

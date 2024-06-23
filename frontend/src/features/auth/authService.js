@@ -5,7 +5,7 @@ const API_URL = '/api/users/'   // /api/users/ is the end point for all the auth
 
 // Register user
 const register = async (userData) => {
-  const response = await axios.post(API_URL, userData)  // To make a POST request (with the user data) to http://localhost:5000/api/users/
+  const response = await axios.post(API_URL, userData)  // To make a POST request (with the user data (refister data)) to http://localhost:5000/api/users/
 
   if (response.data) {
     localStorage.setItem('user', JSON.stringify(response.data)) // To save the data to local storage
@@ -14,14 +14,14 @@ const register = async (userData) => {
 }
 
 // Login user
-// const login = async (userData) => {
-//   const response = await axios.post(API_URL + 'login', userData)
+const login = async (userData) => {
+  const response = await axios.post(API_URL + 'login', userData)  // To make a POST request (with the user data (login data)) to http://localhost:5000/api/users/login
 
-//   if (response.data) {
-//     localStorage.setItem('user', JSON.stringify(response.data))     // To save the data to local storage
-//   }
-//   return response.data
-// }
+  if (response.data) {
+    localStorage.setItem('user', JSON.stringify(response.data))     // To save the data to local storage
+  }
+  return response.data
+}
 
 // Logout user
 const logout = () => localStorage.removeItem('user')
@@ -29,7 +29,7 @@ const logout = () => localStorage.removeItem('user')
 const authService = {   // To structure all functions for the export
   register,
   logout,
-//   login,
+  login,
 }
 
 export default authService

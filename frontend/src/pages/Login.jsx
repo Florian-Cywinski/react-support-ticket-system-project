@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { FaSignInAlt } from 'react-icons/fa'
-// import { toast } from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'  // useSelector to select from the global state (e.g. user, message) - useDispatch to dispatch actions (e.g. register in authSlice.js)
 import { login } from '../features/auth/authSlice' // To bring in the login function / action
+import Spinner from '../components/Spinner'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -13,6 +15,7 @@ function Login() {
   const { email, password } = formData   // To destructure the keys from the object
 
   const dispatch = useDispatch()  // To be able to dispatch a function / action brought in (to be able to update a state, e.g. from the auth slice)
+  const navigate = useNavigate()
 
   const { isLoading } = useSelector((state) => state.auth)  // To get the state isLoading from auth
 
@@ -24,6 +27,12 @@ function Login() {
 
   }
 
+  // NOTE: no need for useEffect here as we can catch the
+  // AsyncThunkAction rejection in our onSubmit or redirect them on the
+  // resolution
+  // Side effects shoulld go in event handlers where possible
+  // source: - https://beta.reactjs.org/learn/keeping-components-pure#where-you-can-cause-side-effects
+
   const onSubmit = (e) => {
     e.preventDefault()
 
@@ -33,7 +42,19 @@ function Login() {
     }
 
     dispatch(login(userData)) // To update the userData
+      .unwrap()
+      .then((user) => {
+        // NOTE: by unwrapping the AsyncThunkAction we can navigate the user after
+        // getting a good response from our API or catch the AsyncThunkAction
+        // rejection to show an error message
+        toast.success(`Logged in as ${user.name}`)
+        navigate('/')
+      })
+      .catch(toast.error)
+  }
 
+  if (isLoading) {
+    return <Spinner />
   }
 
   return (

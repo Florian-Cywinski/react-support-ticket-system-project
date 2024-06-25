@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'  // useSelector to bring 
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { createTicket } from '../features/tickets/ticketSlice'
-
+import BackButton from '../components/BackButton'
 
 function NewTicket() {
   const { user } = useSelector((state) => state.auth)   // To get the user from the auth part of the state
@@ -30,6 +30,7 @@ function NewTicket() {
 
   return (
     <>
+      <BackButton />
       <section className='heading'>
         <h1>Create New Ticket</h1>
         <p>Please fill out the form below</p>

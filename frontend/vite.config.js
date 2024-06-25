@@ -15,11 +15,16 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-    '/api/users': {
-    target: 'http://localhost:5000',
-    changeOrigin: true,
-      },
+      '/api': 'http://localhost:5000',
+    // Another way - to have it separately
+    // '/api/users': {
+    // target: 'http://localhost:5000',
+    // changeOrigin: true,
+    //   },
+    // '/api/tickets': {
+    //   target: 'http://localhost:5000',
+    //   changeOrigin: true,
+    //   },
     },
   },
 })
-

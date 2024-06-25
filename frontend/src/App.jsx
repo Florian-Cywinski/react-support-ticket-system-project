@@ -7,6 +7,7 @@ import { ToastContainer } from 'react-toastify' // To be able to add toasts (mes
 import 'react-toastify/dist/ReactToastify.css'
 import PrivateRoute from './components/PrivateRoute'
 import NewTicket from './pages/NewTicket'
+import Tickets from './pages/Tickets'
 
 
 function App() {
@@ -22,6 +23,12 @@ function App() {
             <Route path='/new-ticket' element={
                 <PrivateRoute>
                   <NewTicket />
+                </PrivateRoute>
+              }
+            />
+            <Route path='/tickets' element={
+                <PrivateRoute>
+                  <Tickets />
                 </PrivateRoute>
               }
             />

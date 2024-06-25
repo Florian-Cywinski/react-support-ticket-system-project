@@ -1,5 +1,8 @@
 import { useState } from 'react'    // For the form (local state)
 import { useSelector, useDispatch } from 'react-redux'  // useSelector to bring in the user from the global state
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { createTicket } from '../features/tickets/ticketSlice'
 
 
 function NewTicket() {
@@ -10,17 +13,20 @@ function NewTicket() {
   const [product, setProduct] = useState('iPhone')  // The array must contain one of the available products by default so that no error occurs  // ticketModel.js (enum: ['iPhone', 'Macbook Pro', 'iMac', 'iPad'])
   const [description, setDescription] = useState('')
 
-
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const onSubmit = (e) => {
     e.preventDefault()
-
+    dispatch(createTicket({ product, description }))  // To update the ticket (ticketSlice is the slice of redux state for the tickets)
+      .unwrap()
+      .then(() => {
+        // We got a good response so navigate the user
+        navigate('/tickets')
+        toast.success('New ticket created!')
+      })
+      .catch(toast.error)
   }
-
-
-
-
-
 
   return (
     <>

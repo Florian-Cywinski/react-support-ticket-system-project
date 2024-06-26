@@ -6,8 +6,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import BackButton from '../components/BackButton'
 import Spinner from '../components/Spinner'
 import NoteItem from '../components/NoteItem'
-// import { getNotes, createNote } from '../features/notes/noteSlice'
-import { getNotes } from '../features/notes/noteSlice'
+import { getNotes, createNote } from '../features/notes/noteSlice'
 import Modal from 'react-modal'
 import { FaPlus } from 'react-icons/fa'
 
@@ -62,7 +61,7 @@ function Ticket() {
     // NOTE: we can unwrap our AsyncThunkACtion here so no need for isError and
     // isSuccess state
     e.preventDefault()
-    dispatch(createNote({ noteText, ticketId }))
+    dispatch(createNote({ noteText, ticketId }))  // noteText comes from the form
       .unwrap()
       .then(() => {
         setNoteText('') // To clear up the text area

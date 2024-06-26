@@ -10,6 +10,10 @@ const {   // To import the controller functions
 
 const { protect } = require('../middleware/authMiddleware') // To bring in the middleware (function) to be able to protect a route (access) - it's used in /me
 
+// Re-route into note router    //  /api/tickets/:ticketId/notes    
+const noteRouter = require('./noteRoutes')
+router.use('/:ticketId/notes', noteRouter)
+
 // GET and POST request to http://localhost:5000/api/tickets
 router.route('/').get(protect, getTickets).post(protect, createTicket)  // router.route() to be able to chain on on this (.get().post()) - protect to have a protected route (the user has to be authenticated) which is connected to the controller function getTickets
 

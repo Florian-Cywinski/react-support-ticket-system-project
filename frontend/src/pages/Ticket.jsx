@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import Modal from 'react-modal'
-import { FaPlus } from 'react-icons/fa'
 import { useSelector, useDispatch } from 'react-redux'
 import { getTicket, closeTicket } from '../features/tickets/ticketSlice'
-// import { getNotes, createNote } from '../features/notes/noteSlice'
-import { getNotes } from '../features/notes/noteSlice'
 import { useParams, useNavigate } from 'react-router-dom'
 import BackButton from '../components/BackButton'
 import Spinner from '../components/Spinner'
 import NoteItem from '../components/NoteItem'
+// import { getNotes, createNote } from '../features/notes/noteSlice'
+import { getNotes } from '../features/notes/noteSlice'
+import Modal from 'react-modal'
+import { FaPlus } from 'react-icons/fa'
 
-const customStyles = {
+const customStyles = {    // To style the modal
   content: {
     width: '600px',
     top: '50%',
@@ -24,7 +24,7 @@ const customStyles = {
   },
 }
 
-Modal.setAppElement('#root')
+Modal.setAppElement('#root')  // #root is the app element the modal is on - index.html -> it's mounted to the root
 
 function Ticket() {
   const [modalIsOpen, setModalIsOpen] = useState(false)
@@ -58,20 +58,20 @@ function Ticket() {
   }
 
   // Create note submit
-  // const onNoteSubmit = (e) => {
-  //   // NOTE: we can unwrap our AsyncThunkACtion here so no need for isError and
-  //   // isSuccess state
-  //   e.preventDefault()
-  //   dispatch(createNote({ noteText, ticketId }))
-  //     .unwrap()
-  //     .then(() => {
-  //       setNoteText('')
-  //       closeModal()
-  //     })
-  //     .catch(toast.error)
-  // }
+  const onNoteSubmit = (e) => {
+    // NOTE: we can unwrap our AsyncThunkACtion here so no need for isError and
+    // isSuccess state
+    e.preventDefault()
+    dispatch(createNote({ noteText, ticketId }))
+      .unwrap()
+      .then(() => {
+        setNoteText('') // To clear up the text area
+        closeModal()    // To set closeModal to true
+      })
+      .catch(toast.error)
+  }
 
-  // Open/close modal
+  // Open / close modal
   const openModal = () => setModalIsOpen(true)
   const closeModal = () => setModalIsOpen(false)
 
@@ -108,17 +108,14 @@ function Ticket() {
       )}
 
       <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        style={customStyles}
+        isOpen={modalIsOpen}  // To open the modal - modalIsOpen is a state (boolean)
+        onRequestClose={closeModal} // To close the modal
+        style={customStyles}  // To have custom style
         contentLabel='Add Note'
-      >
+      > {/* The modal content */}
         <h2>Add Note</h2>
-        <button className='btn-close' onClick={closeModal}>
-          X
-        </button>
-        {/* <form onSubmit={onNoteSubmit}> */}
-        <form>
+        <button className='btn-close' onClick={closeModal}>X</button>
+        <form onSubmit={onNoteSubmit}>
           <div className='form-group'>
             <textarea
               name='noteText'
@@ -130,9 +127,7 @@ function Ticket() {
             ></textarea>
           </div>
           <div className='form-group'>
-            <button className='btn' type='submit'>
-              Submit
-            </button>
+            <button className='btn' type='submit'>Submit</button>
           </div>
         </form>
       </Modal>

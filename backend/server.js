@@ -21,11 +21,13 @@ app.use('/api/tickets', require('./routes/ticketRoutes'))   // Routes to /api/ti
 // Serve Frontend
 if (process.env.NODE_ENV === 'production') {
     // Set (frontend) build folder as static
-    app.use(express.static(path.join(__dirname, '../frontend/build')))  // __dirname to go to the root directory -> from there it directs to frontend/build (static folder)
+    // app.use(express.static(path.join(__dirname, '../frontend/build')))  // __dirname to go to the root directory -> from there it directs to frontend/build (static folder)
+    app.use(express.static(path.join(__dirname, '../frontend/dist')))  // __dirname to go to the root directory -> from there it directs to frontend/build (static folder)
   
     // FIX: below code fixes app crashing on refresh in deployment
     app.get('*', (_, res) => {  // app.get('*' means app.anything except for the routes /api/users and /api/tickets (those get hit first)
-      res.sendFile(path.join(__dirname, '../frontend/build/index.html'))  // To send the index.html file which is in the build folder of the react app
+      // res.sendFile(path.join(__dirname, '../frontend/build/index.html'))  // To send the index.html file which is in the build folder of the react app
+      res.sendFile(path.join(__dirname, '../frontend/dist/index.html'))  // To send the index.html file which is in the build folder of the react app
     })
   } else {
     app.get('/', (_, res) => {
@@ -36,3 +38,4 @@ if (process.env.NODE_ENV === 'production') {
 app.use(errorHandler)   // To be able to use the errorHandler function
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`))    // To listen on a specific port
+
